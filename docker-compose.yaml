@@ -1,0 +1,23 @@
+---
+version: "3.8"
+
+services:
+
+  master:
+    container_name: master
+    image: multipaper-master:latest
+    ports:
+      - 25565:25565
+    volumes:
+      - ./config/master:/app
+  
+  server:
+    image: multipaper:latest
+    # volumes:
+    #   - ./config/server:/app
+    environment:
+      - EULA=true # Setting this to true will automatically accept the Minecraft EULA upon launch
+      - JAVA_TOOL_OPTIONS=-Xmx1G
+        -DmultipaperMasterAddress=master:35353
+        -Dproperties.view-distance=16
+        -Dspigot.settings.bungeecord=true
