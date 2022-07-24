@@ -88,7 +88,7 @@ If you require direct access to the server files, you can attach a volume to the
 | `-p 25565:25565` | Optional. Only required if connecting to a Master server outside of the network | 
 | `-e EULA=true` | Specifies that the EULA has been accepted. Required for the server to launch |
 | `-e JAVA_TOOL_OPTIONS="..."` | Sets the environment variable to pass options into Java at runtime |
-| [server_opts] | Optional parameters sent to the `multipaper.jar` (Default value: `--max-players=30`) |
+| `[server_opts]` | Optional parameters sent to the `multipaper.jar` (Default value: `--max-players=30`) |
 
 
 ## Updating
