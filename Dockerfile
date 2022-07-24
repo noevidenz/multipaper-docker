@@ -1,5 +1,5 @@
 #syntax=docker/dockerfile:1.4
-FROM gradle:latest as build
+FROM --platform=$BUILDPLATFORM gradle:latest as build
 
 WORKDIR /app
 

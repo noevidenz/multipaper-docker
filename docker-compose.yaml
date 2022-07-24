@@ -5,14 +5,14 @@ services:
 
   master:
     container_name: master
-    image: multipaper-master:latest
+    image: noevidenz/multipaper-master:latest
     ports:
       - 25565:25565
     volumes:
       - ./config/master:/app
   
   server:
-    image: multipaper:latest
+    image: noevidenz/multipaper:latest
     # volumes:
     #   - ./config/server:/app
     environment:
