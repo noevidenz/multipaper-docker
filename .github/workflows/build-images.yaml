@@ -41,23 +41,23 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          push: false
+          push: true
           tags: noevidenz/multipaper-master
           target: master
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
 
       - name: Build multipaper
         uses: docker/build-push-action@v3
         with:
           context: .
-          push: false
+          push: true
           tags: noevidenz/multipaper
           target: server
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
 
 #      - name: Build
 #        run: |
