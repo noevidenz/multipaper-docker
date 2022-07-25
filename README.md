@@ -1,6 +1,15 @@
 # MultiPaper Docker
 
-MultiPaper Docker automatically compiles the latest commit from the official MultiPaper repository and publishes the images to Docker Hub.
+[![Build images](https://github.com/noevidenz/multipaper-docker/actions/workflows/build-images.yaml/badge.svg?branch=main)](https://github.com/noevidenz/multipaper-docker/actions/workflows/build-images.yaml)
+
+[MultiPaper Docker](https://github.com/noevidenz/multipaper-docker) automatically compiles the latest commit from the official MultiPaper repository and publishes the images to Docker Hub.
+
+## Images
+
+|              Image              | Supported Architectures     |
+|:-------------------------------:|:----------------------------|
+| [noevidenz/multipaper-master](https://hub.docker.com/r/noevidenz/multipaper-master) | `amd64`, `arm64`, `arm/v7`  |
+|    [noevidenz/multipaper](https://hub.docker.com/r/noevidenz/multipaper)     | `amd64`, `arm64`, `arm/v7`  |
 
 
 ## Usage
@@ -21,7 +30,7 @@ Create the following `docker-compose.yaml` file, then simply run `docker-compose
 
 ```yaml
 ---
-version: "3.8"
+version: "3"
 
 services:
 
