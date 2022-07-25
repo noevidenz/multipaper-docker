@@ -29,7 +29,42 @@ jobs:
         with:
           install: true
 
-      - name: Build
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build multipaper-master
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: false
+          tags: noevidenz/multipaper-master
+          target: master
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - name: Build multipaper
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: false
+          tags: noevidenz/multipaper
+          target: server
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+#      - name: Build
+#        run: |
+#          docker build --platform linux/amd64,linux/arm64,linux/arm/v7 --push --target master -t noevidenz/multipaper-master .
+#          docker build --platform linux/amd64,linux/arm64,linux/arm/v7 --push --target server -t noevidenz/multipaper .
+
+      - name: Clean up cache
         run: |
-          docker build --platform linux/amd64,linux/arm64,linux/arm/v7 --push --target master -t noevidenz/multipaper-master .
-          docker build --platform linux/amd64,linux/arm64,linux/arm/v7 --push --target server -t noevidenz/multipaper .
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
