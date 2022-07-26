@@ -29,15 +29,32 @@ jobs:
         with:
           install: true
 
-      - name: Cache Docker layers
-        uses: actions/cache@v3
+      - name: Compile Multipaper JARs
+        uses: docker/build-push-action@v3
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+          context: .
+          push: false
+          load: false
+          target: build
+          cache-from: |
+            type=gha,scope=build
+          cache-to: |
+            type=gha,scope=build,mode=max
 
-      - name: Build multipaper-master
+      - name: Build base image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: false
+          load: false
+          target: base
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          cache-from: |
+            type=gha,scope=base
+          cache-to: |
+            type=gha,scope=base,mode=max
+
+      - name: Build multipaper-master image
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -45,10 +62,14 @@ jobs:
           tags: noevidenz/multipaper-master
           target: master
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+          cache-from: |
+            type=gha,scope=master
+            type=gha,scope=base
+            type=gha,scope=build
+          cache-to: |
+            type=gha,scope=master,mode=max
 
-      - name: Build multipaper
+      - name: Build multipaper image
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -56,15 +77,9 @@ jobs:
           tags: noevidenz/multipaper
           target: server
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
-
-#      - name: Build
-#        run: |
-#          docker build --platform linux/amd64,linux/arm64,linux/arm/v7 --push --target master -t noevidenz/multipaper-master .
-#          docker build --platform linux/amd64,linux/arm64,linux/arm/v7 --push --target server -t noevidenz/multipaper .
-
-      - name: Clean up cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          cache-from: |
+            type=gha,scope=server
+            type=gha,scope=base
+            type=gha,scope=build
+          cache-to: |
+            type=gha,scope=server,mode=max
