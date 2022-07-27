@@ -1,16 +1,24 @@
 # MultiPaper Docker
 
-[![Build images](https://github.com/noevidenz/multipaper-docker/actions/workflows/build-images.yaml/badge.svg?branch=main)](https://github.com/noevidenz/multipaper-docker/actions/workflows/build-images.yaml)
+[![Build Image (edge)](https://github.com/noevidenz/multipaper-docker/actions/workflows/build-images.yaml/badge.svg)](https://github.com/noevidenz/multipaper-docker/actions/workflows/build-images.yaml)
+[![Build from Releases](https://github.com/noevidenz/multipaper-docker/actions/workflows/build-releases.yaml/badge.svg?branch=main)](https://github.com/noevidenz/multipaper-docker/actions/workflows/build-releases.yaml)
 
 [MultiPaper Docker](https://github.com/noevidenz/multipaper-docker) automatically compiles the latest commit from the official MultiPaper repository and publishes the images to Docker Hub.
 
 ## Images
 
-|              Image              | Supported Architectures     |
-|:-------------------------------:|:----------------------------|
-| [noevidenz/multipaper-master](https://hub.docker.com/r/noevidenz/multipaper-master) | `amd64`, `arm64`, `arm/v7`  |
-|    [noevidenz/multipaper](https://hub.docker.com/r/noevidenz/multipaper)     | `amd64`, `arm64`, `arm/v7`  |
+- [noevidenz/multipaper-master](https://hub.docker.com/r/noevidenz/multipaper-master)
+- [noevidenz/multipaper](https://hub.docker.com/r/noevidenz/multipaper)
 
+## Version Tags
+
+_All versions are built nightly at midnight AEST._
+
+|       Tag        | Supported Architectures    | Description                                                                                                                                                                                                                          |
+|:----------------:|:---------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `latest`, `1.19` | `amd64`, `arm64`, `arm/v7` | The latest release from [MultiPaper](https://github.com/MultiPaper/MultiPaper) (currently 1.19)                                                                                                                                      |
+|      `edge`      | `amd64`, `arm64`, `arm/v7` | Built nightly using the latest commit on `main` from the official [MultiPaper](https://github.com/MultiPaper/MultiPaper) repository <br/><br/> _**Warning:** This version is not built from an official release and may be unstable_ |
+|      `1.18`      | `amd64`, `arm64`, `arm/v7` | Built using the final release from the 1.18 family <br/><br/>_**Warning:** This version is outdated and may not contain the latest security and stability features_                                                                  |
 
 ## Usage
 
