@@ -1,0 +1,23 @@
+name: Build from Releases
+
+on:
+#  schedule:
+#    - cron: '0 14 * * *' # Midnight AEST
+  workflow_dispatch:
+
+jobs:
+  build_1-19:
+    uses: ./.github/workflows/build-release.yaml
+    with:
+      version: 1.19
+      master_tags: noevidenz/multipaper-master:1.19,noevidenz/multipaper-master:latest
+      server_tags: noevidenz/multipaper:1.19,noevidenz/multipaper:latest
+    secrets: inherit
+
+  build_1-18:
+    uses: ./.github/workflows/build-release.yaml
+    with:
+      version: 1.19
+      master_tags: noevidenz/multipaper-master:1.18
+      server_tags: noevidenz/multipaper:1.18
+    secrets: inherit

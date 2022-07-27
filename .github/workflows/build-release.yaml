@@ -1,0 +1,103 @@
+name: Build from release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      master_tags:
+        required: true
+        type: string
+      server_tags:
+        required: true
+        type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+
+jobs:
+  build_release:
+    name: Build image from release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: amd64,arm64,arm
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          install: true
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Get Release URL
+        id: get_release
+        run: |
+          RELEASE="$(curl -s "https://multipaper.io/api/v2/projects/multipaper/version_group/${{ inputs.version }}/builds" | jq '.builds[-1]')"
+          VERSION="$(echo "$RELEASE" | jq -r '.version')"
+          BUILD="$(echo "$RELEASE" | jq -r '.build')"
+          MULTIPAPER="$(echo "$RELEASE" | jq -r '.downloads.application.name')"
+          MULTIPAPER_MASTER="$(echo "$RELEASE" | jq -r '.downloads.master.name')"
+          echo "::set-output name=MULTIPAPER_URL::$(echo "https://multipaper.io/api/v2/projects/multipaper/versions/$VERSION/builds/$BUILD/downloads/$MULTIPAPER")"
+          echo "::set-output name=MULTIPAPER_MASTER_URL::$(echo "https://multipaper.io/api/v2/projects/multipaper/versions/$VERSION/builds/$BUILD/downloads/$MULTIPAPER_MASTER")"
+
+      - name: Build base image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: releases/Dockerfile
+          push: false
+          load: false
+          target: base
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          cache-from: |
+            type=gha,scope=release-base
+          cache-to: |
+            type=gha,scope=release-base,mode=max
+
+      - name: Build multipaper-master ${{ inputs.version }} image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: releases/Dockerfile
+          push: true
+          tags: ${{ inputs.master_tags }}
+          target: master
+          build-args: |
+            RELEASE_URL=${{ steps.get_release.outputs.MULTIPAPER_MASTER_URL }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          cache-from: |
+            type=gha,scope=release-master-${{ inputs.version }}
+            type=gha,scope=release-base
+          cache-to: |
+            type=gha,scope=release-master-${{ inputs.version }},mode=max
+
+      - name: Build multipaper ${{ inputs.version }} image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: releases/Dockerfile
+          push: true
+          tags: ${{ inputs.server_tags }}
+          target: server
+          build-args: |
+            RELEASE_URL=${{ steps.get_release.outputs.MULTIPAPER_URL }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          cache-from: |
+            type=gha,scope=release-server-${{ inputs.version }}
+            type=gha,scope=release-base
+          cache-to: |
+            type=gha,scope=release-server-${{ inputs.version }},mode=max
