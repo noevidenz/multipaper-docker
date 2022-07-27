@@ -28,7 +28,9 @@ RUN <<EOT
     mkdir /artifacts
 
     # Discarded version numbers for easy copying later on
+    mv LICENSE.txt /artifacts/multipaper-license.txt
     mv build/libs/MultiPaper-paperclip-$MULTIPAPER_VERSION-reobf.jar /artifacts/multipaper.jar
+    mv MultiPaper-Master/LICENSE.txt /artifacts/multipaper-master-license.txt
     mv MultiPaper-Master/build/libs/MultiPaper-Master-$MUTLIPAPER_MASTER_VERSION-all.jar /artifacts/multipaper-master.jar
 EOT
 
@@ -59,6 +61,7 @@ WORKDIR /app
 # Build the MultiPaper-Master container
 FROM base as master
 
+COPY --from=build --chown=multipaper:multipaper /artifacts/multipaper-master-license.txt /opt/multipaper-master/LICENSE.txt
 COPY --from=build --chown=multipaper:multipaper /artifacts/multipaper-master.jar /opt/multipaper-master/multipaper-master.jar
 
 ENTRYPOINT [ "java", "-jar", "/opt/multipaper-master/multipaper-master.jar" ]
@@ -87,6 +90,7 @@ fi
 # Run the MultiPaper Server jar file
 java -jar $@
 EOT
+COPY --from=build --chown=multipaper:multipaper /artifacts/multipaper-license.txt /opt/multipaper/LICENSE.txt
 COPY --from=build --chown=multipaper:multipaper /artifacts/eula.txt /opt/multipaper/eula.txt
 COPY --from=build --chown=multipaper:multipaper /artifacts/multipaper.jar /opt/multipaper/multipaper.jar
 
