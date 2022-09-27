@@ -51,7 +51,7 @@ EOT
 
 
 # Create a shared base container
-FROM eclipse-temurin:17-jre as base
+FROM eclipse-temurin:19-jre as base
 
 RUN useradd -d /app -s /bin/false multipaper
 USER multipaper
