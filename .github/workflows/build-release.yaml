@@ -55,7 +55,7 @@ jobs:
           echo "::set-output name=MULTIPAPER_MASTER_URL::$(echo "https://multipaper.io/api/v2/projects/multipaper/versions/$VERSION/builds/$BUILD/downloads/$MULTIPAPER_MASTER")"
 
       - name: Build base image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: releases/Dockerfile
@@ -69,7 +69,7 @@ jobs:
             type=gha,scope=release-base,mode=max
 
       - name: Build multipaper-master ${{ inputs.version }} image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: releases/Dockerfile
@@ -86,7 +86,7 @@ jobs:
             type=gha,scope=release-master-${{ inputs.version }},mode=max
 
       - name: Build multipaper ${{ inputs.version }} image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: releases/Dockerfile
