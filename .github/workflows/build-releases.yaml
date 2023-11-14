@@ -6,13 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
+  build_1-20:
+    name: Build Release 1.20
+    uses: ./.github/workflows/build-release.yaml
+    with:
+      version: 1.20
+      master_tags: noevidenz/multipaper-master:1.20
+      server_tags: noevidenz/multipaper:1.20
+    secrets: inherit
+
   build_1-19:
     name: Build Release 1.19
     uses: ./.github/workflows/build-release.yaml
     with:
       version: 1.19
-      master_tags: noevidenz/multipaper-master:1.19,noevidenz/multipaper-master:latest
-      server_tags: noevidenz/multipaper:1.19,noevidenz/multipaper:latest
+      master_tags: noevidenz/multipaper-master:1.19
+      server_tags: noevidenz/multipaper:1.19
     secrets: inherit
 
   build_1-18:

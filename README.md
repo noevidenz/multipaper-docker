@@ -14,11 +14,13 @@
 
 _All versions are built nightly at midnight AEST._
 
-|       Tag        | Supported Architectures    | Description                                                                                                                                                                                                                          |
-|:----------------:|:---------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `latest`, `1.19` | `amd64`, `arm64`, `arm/v7` | The latest release from [MultiPaper](https://github.com/MultiPaper/MultiPaper) (currently 1.19)                                                                                                                                      |
-|      `edge`      | `amd64`, `arm64`, `arm/v7` | Built nightly using the latest commit on `main` from the official [MultiPaper](https://github.com/MultiPaper/MultiPaper) repository <br/><br/> _**Warning:** This version is not built from an official release and may be unstable_ |
-|      `1.18`      | `amd64`, `arm64`, `arm/v7` | Built using the final release from the 1.18 family <br/><br/>_**Warning:** This version is outdated and may not contain the latest security and stability features_                                                                  |
+|   Tag    | Supported Architectures    | Description                                                                                                                                                                                                                          |
+|:--------:|:---------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  `edge`  | `amd64`, `arm64`, `arm/v7` | Built nightly using the latest commit on `main` from the official [MultiPaper](https://github.com/MultiPaper/MultiPaper) repository <br/><br/> _**Warning:** This version is not built from an official release and may be unstable_ |
+|  `1.20`  | `amd64`, `arm64`, `arm/v7` | Built using the  release from the 1.20 family                                                                                                                                                                                        |
+|  `1.19`  | `amd64`, `arm64`, `arm/v7` | Built using the  release from the 1.19 family                                                                                                                                                                                        |
+|  `1.18`  | `amd64`, `arm64`, `arm/v7` | Built using the  release from the 1.18 family <br/><br/>_**Warning:** This version is outdated and may not contain the latest security and stability features_                                                                       |
+| `latest` | `amd64`, `arm64`, `arm/v7` | **Deprecated** tag. Previously an alias for 1.19, but removed to prevent accidentally updating people's worlds from 1.19 to 1.20.                                                                                                        |
 
 ## Usage
 
@@ -44,14 +46,14 @@ services:
 
   master:
     container_name: master
-    image: noevidenz/multipaper-master:latest
+    image: noevidenz/multipaper-master:1.20
     ports:
       - 25565:25565 # Opens the proxy port
     volumes:
       - ./master:/app # Required to access world files
   
   server:
-    image: noevidenz/multipaper:latest
+    image: noevidenz/multipaper:1.20
     environment:
       - EULA=true # Setting this to true will automatically accept the Minecraft EULA upon launch
       - JAVA_TOOL_OPTIONS=-Xmx1G
@@ -124,8 +126,8 @@ docker-compose up -d
 
 ```bash 
 # Pull the updated images
-docker pull noevidenz/multipaper-master:latest
-docker pull noevidenz/multipaper:latest
+docker pull noevidenz/multipaper-master:1.20
+docker pull noevidenz/multipaper:1.20
 
 # List running containers
 docker ps | grep multipaper
@@ -173,7 +175,7 @@ Alternatively, you may add the following line to the `master` service to specify
 ```yaml
   master:
     container_name: master
-    image: noevidenz/multipaper-master:latest
+    image: noevidenz/multipaper-master:1.20
     user: root # this line sets the user inside the container
     ports:
       - 25565:25565 # Opens the proxy port
