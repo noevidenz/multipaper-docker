@@ -10,7 +10,7 @@ jobs:
     name: Build Release 1.20
     uses: ./.github/workflows/build-release.yaml
     with:
-      version: 1.20
+      version: "1.20"
       master_tags: noevidenz/multipaper-master:1.20
       server_tags: noevidenz/multipaper:1.20
     secrets: inherit
@@ -19,7 +19,7 @@ jobs:
     name: Build Release 1.19
     uses: ./.github/workflows/build-release.yaml
     with:
-      version: 1.19
+      version: "1.19"
       master_tags: noevidenz/multipaper-master:1.19
       server_tags: noevidenz/multipaper:1.19
     secrets: inherit
@@ -28,7 +28,7 @@ jobs:
     name: Build release 1.18
     uses: ./.github/workflows/build-release.yaml
     with:
-      version: 1.18
+      version: "1.18"
       master_tags: noevidenz/multipaper-master:1.18
       server_tags: noevidenz/multipaper:1.18
     secrets: inherit
