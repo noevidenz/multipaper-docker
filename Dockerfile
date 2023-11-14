@@ -22,7 +22,7 @@ RUN <<EOT
     ./gradlew shadowjar createReobfPaperclipJar
 
     MULTIPAPER_VERSION=$(gradle properties | grep version | awk '{print $NF}')
-    MUTLIPAPER_MASTER_VERSION=$(gradle MultiPaper-Master:properties | grep version | awk '{print $NF}')
+    MULTIPAPER_MASTER_VERSION=$(gradle MultiPaper-Master:properties | grep version | awk '{print $NF}')
     
     # Move build artifacts to more accessible place
     mkdir /artifacts
@@ -31,7 +31,7 @@ RUN <<EOT
     mv LICENSE.txt /artifacts/multipaper-license.txt
     mv build/libs/MultiPaper-paperclip-$MULTIPAPER_VERSION-reobf.jar /artifacts/multipaper.jar
     mv MultiPaper-Master/LICENSE.txt /artifacts/multipaper-master-license.txt
-    mv MultiPaper-Master/build/libs/MultiPaper-Master-$MUTLIPAPER_MASTER_VERSION-all.jar /artifacts/multipaper-master.jar
+    mv MultiPaper-Master/build/libs/MultiPaper-Master-$MULTIPAPER_MASTER_VERSION-all.jar /artifacts/multipaper-master.jar
 EOT
 
 # CD into a new directory to run the jars
