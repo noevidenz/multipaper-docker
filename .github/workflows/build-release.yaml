@@ -51,8 +51,8 @@ jobs:
           BUILD="$(echo "$RELEASE" | jq -r '.build')"
           MULTIPAPER="$(echo "$RELEASE" | jq -r '.downloads.application.name')"
           MULTIPAPER_MASTER="$(echo "$RELEASE" | jq -r '.downloads.master.name')"
-          echo "::set-output name=MULTIPAPER_URL::$(echo "https://multipaper.io/api/v2/projects/multipaper/versions/$VERSION/builds/$BUILD/downloads/$MULTIPAPER")"
-          echo "::set-output name=MULTIPAPER_MASTER_URL::$(echo "https://multipaper.io/api/v2/projects/multipaper/versions/$VERSION/builds/$BUILD/downloads/$MULTIPAPER_MASTER")"
+          echo "MULTIPAPER_URL=$(echo "https://multipaper.io/api/v2/projects/multipaper/versions/$VERSION/builds/$BUILD/downloads/$MULTIPAPER")" >> $GITHUB_OUTPUT
+          echo "MULTIPAPER_MASTER_URL=$(echo "https://multipaper.io/api/v2/projects/multipaper/versions/$VERSION/builds/$BUILD/downloads/$MULTIPAPER_MASTER")" >> $GITHUB_OUTPUT
 
       - name: Build base image
         uses: docker/build-push-action@v5
