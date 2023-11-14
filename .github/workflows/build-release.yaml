@@ -46,7 +46,7 @@ jobs:
       - name: Get Release URL
         id: get_release
         run: |
-          RELEASE="$(curl -s "https://multipaper.io/api/v2/projects/multipaper/version_group/${{ inputs.version }}/builds" | jq '.builds[-1]')"
+          RELEASE="$(curl -s "https://multipaper.io/api/v2/projects/multipaper/version_group/${{ inputs.version }}/builds" | sed 's/\\n//g' | jq '.builds[-1]')"
           VERSION="$(echo "$RELEASE" | jq -r '.version')"
           BUILD="$(echo "$RELEASE" | jq -r '.build')"
           MULTIPAPER="$(echo "$RELEASE" | jq -r '.downloads.application.name')"
